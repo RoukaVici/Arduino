@@ -40,14 +40,19 @@ int	get_opts(int ac, char **av, Arduino *ard)
   return 0;
 }
 
-void	send_order(Arduino *a, int num, char mode)
+int	send_order(Arduino *a, int num, char mode)
 {
   t_order	o;
 
   o.motor = num;
   o.mode = mode;
-  fwrite(&o, sizeof(t_order), 1, a->fd);
+  if (fwrite(&o, sizeof(t_order), 1, a->fd) != sizeof(t_order))
+    {
+      fprintf(stderr, "\rArduino disconnected! :c\n");
+      return 1;
+    }
   fflush(a->fd);
+  return 0;
 }
 
 void	send_inputs(Arduino *a)
@@ -67,12 +72,14 @@ void	send_inputs(Arduino *a)
 	{
 	  if (c == tab[i].on)
 	    {
-	      send_order(a, i, MODE_ON);
+	      if (send_order(a, i, MODE_ON))
+		goto leave;
 	      break ;
 	    }
 	  else if (c == tab[i].off)
 	    {
-	      send_order(a, i, MODE_OFF);
+	      if (send_order(a, i, MODE_OFF))
+		goto leave;
 	      break ;
 	    }
 	  i++;
@@ -80,6 +87,7 @@ void	send_inputs(Arduino *a)
       if (i == key_size)
 	printf("\rUnsupported keypress: %d\n", c);
     }
+ leave:
   // Reset it as default
   system("/bin/stty cooked");
 }

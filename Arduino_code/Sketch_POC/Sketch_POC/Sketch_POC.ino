@@ -17,6 +17,7 @@ void setup()
 
 void  shortVib()
 {
+  digitalWrite(first, HIGH);
   delay(300);
   digitalWrite(first, LOW);
   delay(600);
