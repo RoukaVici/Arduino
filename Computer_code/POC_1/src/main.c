@@ -57,7 +57,7 @@ int	send_order(Arduino *a, int num, char mode)
 
 void	send_inputs(Arduino *a)
 {
-  const t_motor		tab[] = {{113, 97}};
+  const t_motor		tab[] = {{113, 97}, {119, 115}, {101, 100}};
   const unsigned	key_size = sizeof(tab) / sizeof(t_motor);
   int			c;
 
