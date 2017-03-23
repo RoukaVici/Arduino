@@ -46,11 +46,7 @@ int	send_order(Arduino *a, int num, char mode)
 
   o.motor = num;
   o.mode = mode;
-  if (fwrite(&o, sizeof(t_order), 1, a->fd) != sizeof(t_order))
-    {
-      fprintf(stderr, "\rArduino disconnected! :c\n");
-      return 1;
-    }
+  fwrite(&o, sizeof(t_order), 1, a->fd);
   fflush(a->fd);
   return 0;
 }
