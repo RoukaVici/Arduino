@@ -1,5 +1,6 @@
+const int motors = 2;
 const int first = 3;
-const int motors = 1;
+const int tab[motors] = {3, 5};
 
 void setup()
 {
@@ -10,7 +11,7 @@ void setup()
   int i = 0;
   while (i < motors)
   {
-    pinMode(i + first, OUTPUT);
+    pinMode(tab[i], OUTPUT);
     i++;
   }
 }
@@ -25,7 +26,8 @@ void  shortVib()
 
 void modify(char num, char state)
 {
-  digitalWrite(first + num, state == 1 ? HIGH : LOW);
+  if (num < motors)
+    digitalWrite(tab[num], state == 1 ? HIGH : LOW);
 }
 
 void  vibrate(int n)
