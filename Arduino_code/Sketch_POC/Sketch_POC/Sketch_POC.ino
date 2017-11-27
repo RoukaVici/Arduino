@@ -1,6 +1,6 @@
 const int motors = 2;
-const int first = 3;
-const int tab[motors] = {3, 5};
+const int first = PCINT18;
+const int tab[motors] = {PCINT18,  PCINT19};
 
 void setup()
 {
@@ -49,16 +49,17 @@ void serialEvent()
 {
   // If there are 2 bytes available to read
   if (Serial.available() > 1)
-    {
-      char buff[2];
-      // Put them in buffer
-      Serial.readBytes(buff, 2);
-      // If the motor number is valid, modify its state
-      if (buff[0] < motors && buff[0] >= 0)
-        modify(buff[0], buff[1]);
-      else
-        error();
-    }
+  {
+    char buff[2];
+    // Put them in buffer
+    Serial.readBytes(buff, 2);
+    // If the motor number is valid, modify its state
+    if (buff[0] < motors && buff[0] >= 0)
+      modify(buff[0], buff[1]);
+    else
+      error();
+  }
+
 }
 
 void loop()
