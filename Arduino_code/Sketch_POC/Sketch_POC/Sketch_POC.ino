@@ -1,13 +1,11 @@
 const int motors = 2;
-const int first = PCINT18;
-const int tab[motors] = {PCINT18,  PCINT19};
-
+const int tab[motors] = {9, 10};
 void setup()
 {
   // Init serial connection
   Serial.begin(9600);
 
-  // Init all motors starting from 'first'
+  // Init all motors
   int i = 0;
   while (i < motors)
   {
@@ -18,18 +16,20 @@ void setup()
 
 void  shortVib()
 {
-  digitalWrite(first, HIGH);
+  digitalWrite(tab[0], HIGH);
   delay(300);
-  digitalWrite(first, LOW);
+  digitalWrite(tab[0], LOW);
   delay(600);
 }
 
-void modify(char num, char state)
+// Change a motor's state.  Motor is #num, and we write value 'val' to it.
+void modify(char num, char val)
 {
   if (num < motors)
-    digitalWrite(tab[num], state == 1 ? HIGH : LOW);
+    analogWrite(tab[num], val);
 }
 
+// Do n short vibrations
 void  vibrate(int n)
 {
   int x = 0;
@@ -45,6 +45,9 @@ void  error()
   vibrate(3);
 }
 
+// Triggers every time something happens on the serial connection
+// You write bytes by pairs to the serial communication: 
+// [motor number, intensity (0-255)]
 void serialEvent()
 {
   // If there are 2 bytes available to read
