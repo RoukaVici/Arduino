@@ -1,10 +1,16 @@
 const int motors = 2;
 const int tab[motors] = {9, 10};
+
 void setup()
 {
-  // Init serial connection
+  // Open serial communications and wait for port to open:
   Serial.begin(9600);
-
+  while (!Serial) {
+    Serial.println("Waiting for serial port connection...");// wait for serial port to connect. Needed for Leonardo only
+  }
+ 
+  Serial.println("Ready!");
+  
   // Init all motors
   int i = 0;
   while (i < motors)
@@ -65,7 +71,7 @@ void serialEvent()
 
 }
 
-void loop()
+void loop() // run over and over
 {
+  
 }
-
