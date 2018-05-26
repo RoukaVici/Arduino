@@ -1,14 +1,24 @@
-# POC
+# Roukarduino
+The code running on the RoukaVici gloves themselves.
 
-POC gants RoukaVici
+# Installation
+Connect to the Arduino & upload the sketch.
+**If the bluetooth card is mounted on the serial ports (as it should be), remember to unplug it before uploading.**
 
-## Installation
+# Configuration
+Two main variables are defined:
+- `motors`: The number of motors connected to a single arduino
+- `tab[motors]`: The physical pin values of each motor. Each motor in the tab will be called by its number (the first motor being motor #0, etc)
 
-Connecter a l'arduino et Upload le sketch
-Si l'arduino est branché à la carte Bluetooth sur ses pins sériels,  débrancher la carte bluetooth avant d'upload.
+These numbers can change between releases.
 
-## Bluetooth (Raspberry/Arduino)
+# How it Works
+## Reading data
+The Arduino reads off its Serial port (which usually will be connected to a Bluetooth card). When a `serialEvent` is fired, the Arduino checks for incoming data, and if there are two available bytes, it reads them and sends the vibration order to the proper motor.
 
-Le Raspberry se connecte automatiquement au Arduino à chaque démarrage. Au cas où, un script de connection est disponible dans `/etc/init.d/roukavici_bluetooth.sh` ou `/home/pi/roukavici_bluetooth.sh`, il suffit de l'exécuter.
+Messages are currently structured as such:
+- First byte is the motor number, by index in the `tab` variable: `0-255`
+- Second byte is intensity, from off to on: `0-255`
 
-L'écriture se fait ensuite sur `/dev/rfcomm0`.
+## Errors
+The Arduino signifies that it encountered an error with three short vibrations. The code is in the `error()` function.

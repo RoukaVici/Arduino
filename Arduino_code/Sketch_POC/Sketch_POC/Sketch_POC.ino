@@ -1,5 +1,5 @@
-const int motors = 2;
-const int tab[motors] = {9, 10};
+const int motors = 5;
+const int tab[motors] = {6,7,8, 9, 10};
 
 void setup()
 {
@@ -68,7 +68,6 @@ void serialEvent()
     else
       error();
   }
-
 }
 
 void loop() // run over and over
