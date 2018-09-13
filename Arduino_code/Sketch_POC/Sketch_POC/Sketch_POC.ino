@@ -53,6 +53,8 @@ void  error()
   vibrate(3);
 }
 
+void  v
+
 void handleVibrationv1(const char* buff)
 {
     // If the motor number is valid, modify its state
@@ -95,6 +97,7 @@ int readFromSerial()
       }
       else
       {
+        buff[0] = 'X';
         buff[1] = 0;
         // Write ['H', 0] to signify that the handshake has failed
         Serial.write(buff, 2);
