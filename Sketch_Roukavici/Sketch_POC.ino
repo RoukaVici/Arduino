@@ -1,5 +1,5 @@
 const int motors = 5;
-const int tab[motors] = {6, 7, 8, 9, 10};
+const int tab[motors] = {3, 5, 6, 9, 10};
 // The API level we're using
 char apiLevel = 1;
 
@@ -22,38 +22,33 @@ void setup()
   }
 }
 
-void  shortVib()
-{
-  digitalWrite(tab[0], HIGH);
-  delay(300);
-  digitalWrite(tab[0], LOW);
-  delay(600);
-}
-
-// Change a motor's state.  Motor is #num, and we write value 'val' to it.
-void modify(char num, char val)
-{
-  if (num < motors)
-    analogWrite(tab[num], val);
-}
-
 // Do n short vibrations
 void  vibrate(int n)
 {
   int x = 0;
   while (x < n)
   {
-    shortVib();
+    digitalWrite(tab[0], HIGH);
+    delay(150);
+    digitalWrite(tab[0], LOW);
+    delay(150);
     x++;
   }
 }
 
-void  error()
+// Change a motor's state.  Motor is #num, and we write value 'val' to it.
+void modify(char num, char val)
 {
-  vibrate(3);
+  analogWrite(tab[num], val);
 }
 
-void  v
+void  error()
+{
+  digitalWrite(tab[0], HIGH);
+  delay(300);
+  digitalWrite(tab[0], LOW);
+  delay(150);
+}
 
 void handleVibrationv1(const char* buff)
 {
@@ -64,7 +59,6 @@ void handleVibrationv1(const char* buff)
     {
       error();
     }
- 
 }
 int readFromSerial()
 {
@@ -92,16 +86,16 @@ int readFromSerial()
       // Handshake packet, we only support APIv1 (the lowest possible value) so we just need to check the min value
       if (buff[1] == apiLevel)
       {
+        vibrate(1);
         // Write ['H', 1] to confirm we want API level 1
-        Serial.write(buff, 2);
       }
       else
       {
-        buff[0] = 'X';
         buff[1] = 0;
+        error();
         // Write ['H', 0] to signify that the handshake has failed
-        Serial.write(buff, 2);
       }
+      Serial.write(buff, 2);
     }
     else if (buff[0] == 'R' && buff[1] == apiLevel)
     {
